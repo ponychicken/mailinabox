@@ -68,8 +68,6 @@ tools/editconf.py /etc/spamassassin/local.cf -s \
 tools/editconf.py /etc/spamassassin/local.cf -s \
 	add_header="all Report _REPORT_"
 
-tools/editconf.py /etc/spamassassin/local.cf -s \
-	always_add_headers=1
 
 # Bayesean learning
 # -----------------
