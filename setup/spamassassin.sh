@@ -63,9 +63,7 @@ tools/editconf.py /etc/default/spampd \
 # Tell Spamassassin not to modify the original message except for adding
 # the X-Spam-Status mail header and related headers.
 tools/editconf.py /etc/spamassassin/local.cf -s \
-	report_safe=0
-
-tools/editconf.py /etc/spamassassin/local.cf -s \
+	report_safe=0 \
 	add_header="all Report _REPORT_"
 
 
