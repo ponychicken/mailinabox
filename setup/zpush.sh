@@ -17,12 +17,13 @@ source /etc/mailinabox.conf # load global vars
 
 echo "Installing Z-Push (Exchange/ActiveSync server)..."
 apt_install \
-	php-soap php5-imap libawl-php php5-xsl
+	php7.0-soap php7.0-imap libawl-php php7.0-xsl
 
-php5enmod imap
+phpenmod -v php7.0 imap
 
 # Copy Z-Push into place.
-TARGETHASH=80cbe53de4ab8dd598d1f2af6f0a23fa396c529a
+TARGETHASH=aae5093212ac0b7d8bf2d79fd5b87ca5bbf091cb
+VERSION=2.3.8
 needs_update=0 #NODOC
 if [ ! -f /usr/local/lib/z-push/version ]; then
 	needs_update=1 #NODOC
@@ -31,7 +32,13 @@ elif [[ $TARGETHASH != `cat /usr/local/lib/z-push/version` ]]; then
 	needs_update=1 #NODOC
 fi
 if [ $needs_update == 1 ]; then
-	git_clone https://github.com/fmbiete/Z-Push-contrib $TARGETHASH '' /usr/local/lib/z-push
+	wget_verify http://download.z-push.org/final/2.3/z-push-$VERSION.tar.gz $TARGETHASH /tmp/z-push.tar.gz
+
+	rm -rf /usr/local/lib/z-push
+	tar -xzf /tmp/z-push.tar.gz -C /usr/local/lib/
+	rm /tmp/z-push.tar.gz
+	mv /usr/local/lib/z-push-$VERSION /usr/local/lib/z-push
+
 	rm -f /usr/sbin/z-push-{admin,top}
 	ln -s /usr/local/lib/z-push/z-push-admin.php /usr/sbin/z-push-admin
 	ln -s /usr/local/lib/z-push/z-push-top.php /usr/sbin/z-push-top
@@ -67,6 +74,7 @@ cp conf/zpush/backend_caldav.php /usr/local/lib/z-push/backend/caldav/config.php
 rm -f /usr/local/lib/z-push/autodiscover/config.php
 cp conf/zpush/autodiscover_config.php /usr/local/lib/z-push/autodiscover/config.php
 sed -i "s/PRIMARY_HOSTNAME/$PRIMARY_HOSTNAME/" /usr/local/lib/z-push/autodiscover/config.php
+sed -i "s^define('TIMEZONE', .*^define('TIMEZONE', '$(cat /etc/timezone)');^" /usr/local/lib/z-push/autodiscover/config.php
 
 # Some directories it will use.
 
@@ -92,4 +100,8 @@ EOF
 
 # Restart service.
 
-restart_service php5-fpm
+restart_service php7.0-fpm
+
+# Fix states after upgrade
+
+hide_output z-push-admin -a fixstates

@@ -666,7 +666,7 @@ def check_web_domain(domain, rounded_time, ssl_certificates, env, output):
 		for (rtype, expected) in (("A", env['PUBLIC_IP']), ("AAAA", env.get('PUBLIC_IPV6'))):
 			if not expected: continue # IPv6 is not configured
 			value = query_dns(domain, rtype)
-			if value == expected:
+			if normalize_ip(value) == normalize_ip(expected):
 				ok_values.append(value)
 			else:
 				output.print_error("""This domain should resolve to your box's IP address (%s %s) if you would like the box to serve
@@ -922,7 +922,10 @@ def run_and_output_changes(env, pool):
 def normalize_ip(ip):
 	# Use ipaddress module to normalize the IPv6 notation and ensure we are matching IPv6 addresses written in different representations according to rfc5952.
 	import ipaddress
-	return str(ipaddress.ip_address(ip))
+	try:
+		return str(ipaddress.ip_address(ip))
+	except:
+		return ip
 
 class FileOutput:
 	def __init__(self, buf, width):

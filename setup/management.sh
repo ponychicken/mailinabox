@@ -61,6 +61,31 @@ if [ ! -f $STORAGE_ROOT/backup/secret_key.txt ]; then
 	$(umask 077; openssl rand -base64 2048 > $STORAGE_ROOT/backup/secret_key.txt)
 fi
 
+
+# Download jQuery and Bootstrap local files
+
+# Make sure we have the directory to save to.
+assets_dir=/usr/local/lib/mailinabox/vendor/assets
+rm -rf $assets_dir
+mkdir -p $assets_dir
+
+# jQuery CDN URL
+jquery_version=2.1.4
+jquery_url=https://code.jquery.com
+
+# Get jQuery
+wget_verify $jquery_url/jquery-$jquery_version.min.js 43dc554608df885a59ddeece1598c6ace434d747 $assets_dir/jquery.min.js
+
+# Bootstrap CDN URL
+bootstrap_version=3.3.7
+bootstrap_url=https://github.com/twbs/bootstrap/releases/download/v$bootstrap_version/bootstrap-$bootstrap_version-dist.zip
+
+# Get Bootstrap
+wget_verify $bootstrap_url e6b1000b94e835ffd37f4c6dcbdad43f4b48a02a /tmp/bootstrap.zip
+unzip -q /tmp/bootstrap.zip -d /usr/local/lib/mailinabox/vendor/assets
+mv /usr/local/lib/mailinabox/vendor/assets/bootstrap-$bootstrap_version-dist /usr/local/lib/mailinabox/vendor/assets/bootstrap
+rm -f /tmp/bootstrap.zip
+
 # Link the management server daemon into a well known location.
 rm -f /usr/local/bin/mailinabox-daemon
 ln -s `pwd`/management/daemon.py /usr/local/bin/mailinabox-daemon

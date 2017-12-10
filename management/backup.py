@@ -115,7 +115,7 @@ def backup_status(env):
 	# full backup. That full backup frees up this one to be deleted. But, the backup
 	# must also be at least min_age_in_days old too.
 	deleted_in = None
-	if incremental_count > 0 and first_full_size is not None:
+	if incremental_count > 0 and incremental_size > 0 and first_full_size is not None:
 		# How many days until the next incremental backup? First, the part of
 		# the algorithm based on increment sizes:
 		est_days_to_next_full = (.5 * first_full_size - incremental_size) / (incremental_size/incremental_count)
@@ -267,7 +267,7 @@ def perform_backup(full_backup):
 			if quit:
 				sys.exit(code)
 
-	service_command("php5-fpm", "stop", quit=True)
+	service_command("php7.0-fpm", "stop", quit=True)
 	service_command("postfix", "stop", quit=True)
 	service_command("dovecot", "stop", quit=True)
 
@@ -301,7 +301,7 @@ def perform_backup(full_backup):
 		# Start services again.
 		service_command("dovecot", "start", quit=False)
 		service_command("postfix", "start", quit=False)
-		service_command("php5-fpm", "start", quit=False)
+		service_command("php7.0-fpm", "start", quit=False)
 
 	# Once the migrated backup is included in a new backup, it can be deleted.
 	if os.path.isdir(migrated_unencrypted_backup_dir):
@@ -399,10 +399,11 @@ def list_target_files(config):
 		rsync_fn_size_re = re.compile(r'.*    ([^ ]*) [^ ]* [^ ]* (.*)')
 		rsync_target = '{host}:{path}'
 
-		if not target.path.endswith('/'):
-			target_path = target.path + '/'
-		if target.path.startswith('/'):
-			target_path = target.path[1:]
+		target_path = target.path
+		if not target_path.endswith('/'):
+			target_path = target_path + '/'
+		if target_path.startswith('/'):
+			target_path = target_path[1:]
 
 		rsync_command = [ 'rsync',
 					'-e',

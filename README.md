@@ -28,7 +28,7 @@ It is a one-click email appliance. There are no user-configurable setup options.
 
 The components installed are:
 
-* SMTP ([postfix](http://www.postfix.org/)), IMAP ([dovecot](http://dovecot.org/)), CardDAV/CalDAV ([ownCloud](https://owncloud.org/)), Exchange ActiveSync ([z-push](https://github.com/fmbiete/Z-Push-contrib))
+* SMTP ([postfix](http://www.postfix.org/)), IMAP ([dovecot](http://dovecot.org/)), CardDAV/CalDAV ([Nextcloud](https://nextcloud.com/)), Exchange ActiveSync ([z-push](http://z-push.org/))
 * Webmail ([Roundcube](http://roundcube.net/)), static website hosting ([nginx](http://nginx.org/))
 * Spam filtering ([spamassassin](https://spamassassin.apache.org/)), greylisting ([postgrey](http://postgrey.schweikert.ch/))
 * DNS ([nsd4](https://www.nlnetlabs.nl/projects/nsd/)) with [SPF](https://en.wikipedia.org/wiki/Sender_Policy_Framework), DKIM ([OpenDKIM](http://www.opendkim.org/)), [DMARC](https://en.wikipedia.org/wiki/DMARC), [DNSSEC](https://en.wikipedia.org/wiki/DNSSEC), [DANE TLSA](https://en.wikipedia.org/wiki/DNS-based_Authentication_of_Named_Entities), and [SSHFP](https://tools.ietf.org/html/rfc4255) records automatically set
@@ -59,7 +59,7 @@ by me:
 	$ curl -s https://keybase.io/joshdata/key.asc | gpg --import
 	gpg: key C10BDD81: public key "Joshua Tauberer <jt@occams.info>" imported
 
-	$ git verify-tag v0.21c
+	$ git verify-tag v0.25
 	gpg: Signature made ..... using RSA key ID C10BDD81
 	gpg: Good signature from "Joshua Tauberer <jt@occams.info>"
 	gpg: WARNING: This key is not certified with a trusted signature!
@@ -72,7 +72,7 @@ and on my [personal homepage](https://razor.occams.info/). (Of course, if this r
 
 Checkout the tag corresponding to the most recent release:
 
-	$ git checkout v0.21c
+	$ git checkout v0.25
 
 Begin the installation.
 
