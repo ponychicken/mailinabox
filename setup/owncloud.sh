@@ -346,7 +346,7 @@ include("$STORAGE_ROOT/owncloud/config.php");
 \$CONFIG['logdateformat'] = 'Y-m-d H:i:s';
 
 \$CONFIG['mail_domain'] = '$PRIMARY_HOSTNAME';
-
+\$CONFIG['trashbin_retention_obligation'] => '30,50',
 echo "<?php\n\\\$CONFIG = ";
 var_export(\$CONFIG);
 echo ";";
