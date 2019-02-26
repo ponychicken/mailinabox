@@ -112,6 +112,30 @@ tools/editconf.py /etc/dovecot/conf.d/20-imap.conf \
 tools/editconf.py /etc/dovecot/conf.d/20-pop3.conf \
 	pop3_uidl_format="%08Xu%08Xv"
 
+# Mail plugin configuration.
+# Enable zlib compression to reduce the space used by mailboxes
+tools/editconf.py /etc/dovecot/conf.d/10-mail.conf \
+	mail_plugins="\$mail_plugins zlib"
+
+# Configure zlib plugin
+cat > /etc/dovecot/conf.d/90-plugin-zlib.conf << EOF;
+plugin {
+  zlib_save_level = 6
+  zlib_save = gz
+}
+EOF
+
+# IMAP only plugins
+# Enable the Dovecot antispam plugin as well as IMAP zlib.
+tools/editconf.py /etc/dovecot/conf.d/20-imap.conf \
+        mail_plugins="\$mail_plugins antispam imap_zlib"
+
+# POP3 only plugins
+# Enable the Dovecot antispam plugin.
+tools/editconf.py /etc/dovecot/conf.d/20-pop3.conf \
+        mail_plugins="\$mail_plugins antispam"
+
+
 # ### LDA (LMTP)
 
 # Enable Dovecot's LDA service with the LMTP protocol. It will listen
