@@ -220,6 +220,8 @@ include("$STORAGE_ROOT/owncloud/config.php");
 
 \$CONFIG['mail_domain'] = '$PRIMARY_HOSTNAME';
 
+\$CONFIG['trashbin_retention_obligation'] = '30,50';
+
 echo "<?php\n\\\$CONFIG = ";
 var_export(\$CONFIG);
 echo ";";
