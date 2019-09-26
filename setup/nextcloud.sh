@@ -253,6 +253,8 @@ include("$STORAGE_ROOT/owncloud/config.php");
 
 \$CONFIG['user_backends'] = array(array('class' => 'OC_User_IMAP','arguments' => array('127.0.0.1', 143, null),),);
 
+\$CONFIG['trashbin_retention_obligation'] = '30,50';
+
 echo "<?php\n\\\$CONFIG = ";
 var_export(\$CONFIG);
 echo ";";
